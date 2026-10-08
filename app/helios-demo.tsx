@@ -3,14 +3,13 @@
 import { useActionState, useEffect, useState } from 'react';
 import {
   ArrowLeftIcon,
-  BanknoteIcon,
-  BriefcaseIcon,
-  CalendarDaysIcon,
+  BlocksIcon,
   CheckIcon,
-  ClockIcon,
   Loader2Icon,
-  MessageSquareTextIcon,
-  UserPlusIcon,
+  PencilLineIcon,
+  SendIcon,
+  TrendingUpIcon,
+  WorkflowIcon,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -27,52 +26,65 @@ const HELIOS_MARK_SPEED = 0.2;
 
 const CAPABILITIES = [
   {
-    icon: BriefcaseIcon,
-    tag: 'Job titles',
-    label: 'Set up job titles',
+    icon: BlocksIcon,
+    tag: 'New features',
+    label: 'Build new features',
     detail:
-      'Tell Helios the roles your team works, like Server or Line Cook. It adds each one with its pay rate and the certifications people need before they can be scheduled for it.',
-    example: 'Add a Shift Lead role that pays $22 an hour.',
+      'Stand out from other staffing firms with tools your clients and workers will notice. Describe what you want, and Helios builds it into your account.',
+    examples: [
+      'A client dashboard with fill rates and hours worked',
+      'A feedback form clients fill out after every shift',
+      'Worker tiers, so your best people get first pick of shifts',
+      'Surge pricing for last-minute and hard-to-fill shifts',
+    ],
   },
   {
-    icon: CalendarDaysIcon,
-    tag: 'Schedules',
-    label: 'Build schedules',
+    icon: WorkflowIcon,
+    tag: 'Workflows',
+    label: 'Update your workflows',
     detail:
-      "Helios builds shifts and weekly schedules around who is available, flags conflicts and overtime before you publish, and helps you find someone when a shift opens up.",
-    example: "Fill Saturday's open bartender shift.",
+      'Change how work moves through your account: approvals, reminders, onboarding steps and handoffs. Helios shows you what will change before it saves anything.',
+    examples: [
+      'Remind workers 2 hours before their shift',
+      'Send timesheets to the client for approval every Friday',
+      "Add a background check before a worker's first shift",
+    ],
   },
   {
-    icon: ClockIcon,
-    tag: 'Time off',
-    label: 'Change how time off works',
+    icon: PencilLineIcon,
+    tag: 'Updates',
+    label: 'Make updates',
     detail:
-      'Set how time off is earned, how much carries over, and who approves requests. Helios sets up the request form and keeps balances up to date.',
-    example: 'Give full-time staff 10 days of PTO a year.',
+      'Change pay rates, roles, locations and client details across your account in one ask, instead of one record at a time.',
+    examples: [
+      "Raise every CNA's pay rate by $1 an hour",
+      'Add our new client, Mercy Hospital, and its three sites',
+      "Archive workers who haven't worked in 6 months",
+    ],
   },
   {
-    icon: BanknoteIcon,
-    tag: 'Pay rules',
-    label: 'Set pay rules',
+    icon: SendIcon,
+    tag: 'Reach out',
+    label: 'Reach out to staff',
     detail:
-      'Set overtime, night and weekend differentials, and holiday pay. Helios applies them to every timesheet, so payroll comes out right without manual fixes.',
-    example: 'Pay time and a half after 40 hours a week.',
+      'Text or email the right people at the right time. Helios finds who is qualified and available, sends the message, and keeps track of who replies.',
+    examples: [
+      "Text available RNs about tonight's open shift",
+      'Ask everyone with an expiring license to upload a new one',
+      'Thank the team that covered last weekend',
+    ],
   },
   {
-    icon: UserPlusIcon,
-    tag: 'New hires',
-    label: 'Get a new hire started',
+    icon: TrendingUpIcon,
+    tag: 'Metrics',
+    label: 'Improve your metrics',
     detail:
-      'When you hire someone, Helios sends them their paperwork to sign on their phone and shows you what is still missing before their first shift.',
-    example: 'Start onboarding for our new hire, Maria.',
-  },
-  {
-    icon: MessageSquareTextIcon,
-    tag: 'Growing',
-    label: 'Grow with your team',
-    detail:
-      'Open a location, add a team or change a policy by asking in plain words. Helios shows you what it will change, and makes the update once you say yes.',
-    example: "We're opening a second location in Austin.",
+      "Helios watches fill rate, time to fill, no-shows and margins, points out what's slipping, and suggests changes you can make in one step.",
+    examples: [
+      'Why did our fill rate drop last month?',
+      'Which clients cancel shifts last minute most often?',
+      'Suggest ways to cut overtime',
+    ],
   },
 ];
 
@@ -159,7 +171,7 @@ function Intro({ firstView }: { firstView: boolean }) {
 
 function Capabilities({ onTryDemo }: { onTryDemo: () => void }) {
   const [selected, setSelected] = useState(0);
-  const { icon: SelectedIcon, label, detail, example } = CAPABILITIES[selected];
+  const { icon: SelectedIcon, label, detail, examples } = CAPABILITIES[selected];
 
   return (
     <section className="helios-step mt-4 flex w-full flex-col items-center gap-5" aria-labelledby="capabilities-heading">
@@ -170,12 +182,13 @@ function Capabilities({ onTryDemo }: { onTryDemo: () => void }) {
         <p className="text-sm text-muted-foreground">Tap one to see how it works.</p>
       </div>
 
-      <div className="grid w-full grid-cols-2 gap-2 sm:grid-cols-3" role="group" aria-label="Things Helios can do">
+      {/* Five tags: 2 + 2 + 1 wide on phones, 3 + 2 on wider screens. */}
+      <div className="grid w-full grid-cols-2 gap-2 sm:grid-cols-6" role="group" aria-label="Things Helios can do">
         {CAPABILITIES.map(({ icon: Icon, tag }, i) => (
           <button
             key={tag}
             type="button"
-            className="helios-pill"
+            className={cn('helios-pill', i < 3 ? 'sm:col-span-2' : 'sm:col-span-3', i === 4 && 'col-span-2')}
             aria-pressed={i === selected}
             aria-controls="capability-detail"
             onClick={() => setSelected(i)}
@@ -200,9 +213,16 @@ function Capabilities({ onTryDemo }: { onTryDemo: () => void }) {
           <h3 className="text-base font-medium text-foreground">{label}</h3>
         </div>
         <p className="text-sm leading-6 text-muted-foreground">{detail}</p>
-        <p className="rounded-lg bg-secondary px-3 py-2 text-sm text-secondary-foreground">
-          <span className="text-muted-foreground">Try asking: </span>“{example}”
-        </p>
+        <div className="flex flex-col gap-2">
+          <span className="text-xs font-medium tracking-wide text-muted-foreground uppercase">For example</span>
+          <ul className="flex flex-col gap-1.5">
+            {examples.map((example) => (
+              <li key={example} className="rounded-lg bg-secondary px-3 py-1.5 text-sm leading-5 text-secondary-foreground">
+                {example}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       <Button size="lg" className="h-12 w-full rounded-full text-base sm:w-auto sm:px-10" onClick={onTryDemo}>
