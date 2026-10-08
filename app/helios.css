@@ -1,0 +1,255 @@
+/* Helios's look, ported from Teambridge's Aura (helios.scss, ultron.scss). The aurora hues are
+   decorative light, so like the original they have no semantic tokens. */
+
+html,
+body {
+  height: 100%;
+  background: var(--color-bg-primary);
+  /* No rubber-band scroll or pull-to-refresh when it runs as a home-screen app. */
+  overscroll-behavior: none;
+}
+
+body {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.helios-backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  --aurora-mint: hsl(170 72% 64%);
+  --aurora-sky: hsl(202 82% 64%);
+  --aurora-blue: hsl(228 84% 64%);
+  --aurora-violet: hsl(252 78% 64%);
+  --aurora-pink: hsl(330 82% 68%);
+  --aurora-peach: hsl(32 88% 66%);
+  --aurora-core: 18%;
+  --aurora-rim: 12%;
+
+  /* Sized from the viewport's short side so the washes stay round on tall phones. */
+  background:
+    radial-gradient(54vmin 39vmin at 40% 24%, color-mix(in srgb, var(--aurora-mint) var(--aurora-core), transparent), transparent 72%),
+    radial-gradient(70vmin 52vmin at 52% 40%, color-mix(in srgb, var(--aurora-sky) var(--aurora-core), transparent), transparent 74%),
+    radial-gradient(67vmin 57vmin at 36% 60%, color-mix(in srgb, var(--aurora-blue) var(--aurora-core), transparent), transparent 74%),
+    radial-gradient(58vmin 52vmin at 26% 42%, color-mix(in srgb, var(--aurora-violet) var(--aurora-rim), transparent), transparent 72%),
+    radial-gradient(48vmin 44vmin at 70% 32%, color-mix(in srgb, var(--aurora-pink) var(--aurora-rim), transparent), transparent 70%),
+    radial-gradient(42vmin 36vmin at 68% 62%, color-mix(in srgb, var(--aurora-peach) var(--aurora-rim), transparent), transparent 70%);
+}
+
+.helios-backdrop::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(192vmin 117vmin at 100% 0%, var(--color-bg-secondary) 0%, transparent 55%);
+}
+
+.helios-backdrop > canvas {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* The orb. On the home screen it is as large as the viewport allows; once a panel opens below it,
+   its box eases down to a small size. The canvas fills the box. */
+.helios-orb {
+  --orb-size: min(88vw, 52dvh, 460px);
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--orb-size);
+  height: var(--orb-size);
+  flex-shrink: 0;
+  border-radius: 9999px;
+  transition:
+    width 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    height 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 200ms ease;
+}
+
+.helios-orb[data-compact='true'] {
+  --orb-size: min(28vw, 120px);
+}
+
+.helios-orb::before {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--color-bg-secondary) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.helios-orb-mark {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  animation: heliosOrbFlash 1200ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition:
+    opacity 1400ms ease-in,
+    transform 1400ms ease-in,
+    filter 1400ms ease-in;
+}
+
+.helios-orb-mark[data-leaving='true'] {
+  opacity: 0;
+  transform: scale(0.82);
+  filter: blur(10px) brightness(1.6);
+}
+
+.helios-orb-mark > canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* The flash as the orb comes on, layered over the mark's own intro (core rises, cells flicker on). */
+@keyframes heliosOrbFlash {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+    filter: brightness(2.4) blur(6px);
+  }
+  35% {
+    opacity: 1;
+    filter: brightness(1.8) blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+button.helios-orb {
+  cursor: pointer;
+  outline: none;
+}
+
+button.helios-orb:active {
+  transform: scale(0.97);
+}
+
+button.helios-orb:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-border-focus);
+}
+
+/* The capability tags, after the Helios suggestion pills. */
+.helios-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  white-space: nowrap;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, var(--color-content-primary) 14%, transparent);
+  background: color-mix(in srgb, var(--color-bg-primary) 80%, transparent);
+  color: var(--color-content-primary);
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease,
+    border-color 150ms ease;
+}
+
+.helios-pill svg {
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-content-tertiary);
+}
+
+.helios-pill:hover {
+  border-color: color-mix(in srgb, var(--color-content-primary) 28%, transparent);
+}
+
+.helios-pill:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+.helios-pill[aria-pressed='true'] {
+  background: var(--color-content-primary);
+  border-color: var(--color-content-primary);
+  color: var(--color-content-inverse);
+}
+
+.helios-pill[aria-pressed='true'] svg {
+  color: var(--color-content-inverse);
+}
+
+/* Glassy surface for the panels that open under the orb, after the Helios composer and pills. */
+.helios-panel {
+  border: 1px solid color-mix(in srgb, var(--color-content-primary) 12%, transparent);
+  background: color-mix(in srgb, var(--color-bg-primary) 72%, transparent);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+}
+
+@keyframes heliosIntroStep {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes heliosHint {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.helios-intro-step {
+  animation: heliosIntroStep 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Timed against the orb's own intro on first load: the core rises in, then the copy follows. */
+.helios-intro-step--1 {
+  animation-delay: 0.95s;
+}
+.helios-intro-step--2 {
+  animation-delay: 1.2s;
+}
+.helios-intro-step--3 {
+  animation-delay: 1.6s;
+}
+
+/* Returning to a step later plays the same rise, without waiting on the orb. */
+.helios-step {
+  animation: heliosIntroStep 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.helios-hint {
+  animation: heliosHint 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .helios-intro-step,
+  .helios-step,
+  .helios-hint {
+    animation: none;
+  }
+  .helios-orb,
+  .helios-orb-mark {
+    transition: none;
+    animation: none;
+  }
+}

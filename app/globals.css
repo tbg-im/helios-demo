@@ -1,0 +1,669 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* shadcn-compatible dark variant: enable `dark:` utilities anywhere
+   inside an element with the .dark class. */
+@custom-variant dark (&:is(.dark *));
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Alloy design tokens
+   ─────────────────────────────────────────────────────────────────────────
+   Two layers:
+
+     Layer 1 — Palette         (raw color stops, --alloy-{hue}-{stop})
+     Layer 2 — Semantic usage  (--color-bg-*, --color-content-*, etc.)
+
+   Layer 2 tokens flip in dark mode (.dark class on <html>).
+   shadcn-compatible aliases (--background, --foreground, --primary, ...)
+   are derived from Layer 2 so v0-generated classes (bg-background,
+   text-muted-foreground, etc.) automatically pick up Alloy values.
+
+   Ref: https://yizzy-gif.github.io/alloy-design-system/
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Layer 1 — Palette (light + dark share the same raw stops) */
+:root {
+  /* Blue */
+  --alloy-blue-50:  #E8F0FF;
+  --alloy-blue-100: #D1E1FF;
+  --alloy-blue-150: #BAD2FF;
+  --alloy-blue-200: #A3C3FF;
+  --alloy-blue-300: #75A5FE;
+  --alloy-blue-400: #4787FE;
+  --alloy-blue-500: #1969FE;
+  --alloy-blue-600: #1454CB;
+  --alloy-blue-700: #0F3F98;
+  --alloy-blue-800: #0A2A66;
+  --alloy-blue-850: #08204C;
+  --alloy-blue-900: #051533;
+  --alloy-blue-950: #030B19;
+
+  /* Azure */
+  --alloy-azure-50:  #E7F1FB;
+  --alloy-azure-100: #CEE3F8;
+  --alloy-azure-150: #B6D5F4;
+  --alloy-azure-200: #9DC7F0;
+  --alloy-azure-300: #6DACE9;
+  --alloy-azure-400: #3C90E1;
+  --alloy-azure-500: #0B74DA;
+  --alloy-azure-600: #095DAE;
+  --alloy-azure-700: #074683;
+  --alloy-azure-800: #042E57;
+  --alloy-azure-850: #032341;
+  --alloy-azure-900: #02172C;
+  --alloy-azure-950: #010C16;
+
+  /* Purple */
+  --alloy-purple-50:  #F0EEFA;
+  --alloy-purple-100: #E1DEF5;
+  --alloy-purple-150: #D2CDF0;
+  --alloy-purple-200: #C3BDEB;
+  --alloy-purple-300: #A69BE2;
+  --alloy-purple-400: #887AD8;
+  --alloy-purple-500: #6A59CE;
+  --alloy-purple-600: #5547A5;
+  --alloy-purple-700: #40357C;
+  --alloy-purple-800: #2A2452;
+  --alloy-purple-850: #201B3E;
+  --alloy-purple-900: #151229;
+  --alloy-purple-950: #0B0915;
+
+  /* Pink */
+  --alloy-pink-50:  #FFEAF4;
+  --alloy-pink-100: #FFD5E9;
+  --alloy-pink-150: #FFC0DE;
+  --alloy-pink-200: #FFABD3;
+  --alloy-pink-300: #FF82BE;
+  --alloy-pink-400: #FF58A8;
+  --alloy-pink-500: #FF2E92;
+  --alloy-pink-600: #CD2575;
+  --alloy-pink-700: #9B1C58;
+  --alloy-pink-800: #69123C;
+  --alloy-pink-850: #500E2D;
+  --alloy-pink-900: #37091F;
+  --alloy-pink-950: #1E0510;
+
+  /* Red */
+  --alloy-red-50:  #FFE9E9;
+  --alloy-red-100: #FFD3D3;
+  --alloy-red-150: #FFBEBD;
+  --alloy-red-200: #FFA8A7;
+  --alloy-red-300: #FF7C7C;
+  --alloy-red-400: #FF5150;
+  --alloy-red-500: #FF2524;
+  --alloy-red-600: #CC1E1D;
+  --alloy-red-700: #991616;
+  --alloy-red-800: #660F0E;
+  --alloy-red-850: #4D0B0B;
+  --alloy-red-900: #330707;
+  --alloy-red-950: #1A0404;
+
+  /* Orange */
+  --alloy-orange-50:  #FDF5EA;
+  --alloy-orange-100: #FCEBD5;
+  --alloy-orange-150: #FAE1C0;
+  --alloy-orange-200: #F8D7AB;
+  --alloy-orange-300: #F5C481;
+  --alloy-orange-400: #F1B057;
+  --alloy-orange-500: #EE9C2D;
+  --alloy-orange-600: #BE7D24;
+  --alloy-orange-700: #8F5E1B;
+  --alloy-orange-800: #5F3E12;
+  --alloy-orange-850: #472F0E;
+  --alloy-orange-900: #301F09;
+  --alloy-orange-950: #181005;
+
+  /* Yellow */
+  --alloy-yellow-50:  #FFFAE5;
+  --alloy-yellow-100: #FFF5CC;
+  --alloy-yellow-150: #FFF0B2;
+  --alloy-yellow-200: #FFEB99;
+  --alloy-yellow-300: #FFE066;
+  --alloy-yellow-400: #FFD633;
+  --alloy-yellow-500: #FFCC00;
+  --alloy-yellow-600: #CCA300;
+  --alloy-yellow-700: #997A00;
+  --alloy-yellow-800: #665200;
+  --alloy-yellow-850: #4D3D00;
+  --alloy-yellow-900: #332900;
+  --alloy-yellow-950: #1A1400;
+
+  /* Matcha */
+  --alloy-matcha-50:  #F5FBE6;
+  --alloy-matcha-100: #EBF6CD;
+  --alloy-matcha-150: #E1F2B3;
+  --alloy-matcha-200: #D7ED9A;
+  --alloy-matcha-300: #C4E568;
+  --alloy-matcha-400: #B0DC35;
+  --alloy-matcha-500: #9CD303;
+  --alloy-matcha-600: #7DA902;
+  --alloy-matcha-700: #5E7F02;
+  --alloy-matcha-800: #3E5401;
+  --alloy-matcha-850: #2F3F01;
+  --alloy-matcha-900: #1F2A01;
+  --alloy-matcha-950: #101500;
+
+  /* Green */
+  --alloy-green-50:  #E6F6E7;
+  --alloy-green-100: #D0EED3;
+  --alloy-green-150: #BBE6BF;
+  --alloy-green-200: #A5DEAB;
+  --alloy-green-300: #7ACD82;
+  --alloy-green-400: #4FBD5A;
+  --alloy-green-500: #24AD32;
+  --alloy-green-600: #1D8A28;
+  --alloy-green-700: #16681E;
+  --alloy-green-800: #0E4514;
+  --alloy-green-850: #0B340F;
+  --alloy-green-900: #07230A;
+  --alloy-green-950: #041105;
+
+  /* Slate */
+  --alloy-slate-50:  #F6F7F9;
+  --alloy-slate-100: #E8EAEE;
+  --alloy-slate-150: #CBD0D7;
+  --alloy-slate-200: #A8AFBA;
+  --alloy-slate-300: #87919F;
+  --alloy-slate-400: #677384;
+  --alloy-slate-500: #475569;
+  --alloy-slate-600: #394454;
+  --alloy-slate-700: #2B333F;
+  --alloy-slate-800: #1C222A;
+  --alloy-slate-850: #151A20;
+  --alloy-slate-900: #0E1115;
+  --alloy-slate-950: #07090B;
+
+  /* Grey */
+  --alloy-grey-50:  #F4F4F4;
+  --alloy-grey-100: #EAEAEA;
+  --alloy-grey-150: #DFDFDF;
+  --alloy-grey-200: #D5D5D5;
+  --alloy-grey-300: #BFBFBF;
+  --alloy-grey-400: #AAAAAA;
+  --alloy-grey-500: #959595;
+  --alloy-grey-600: #777777;
+  --alloy-grey-700: #5A5A5A;
+  --alloy-grey-800: #3C3C3C;
+  --alloy-grey-850: #2D2D2D;
+  --alloy-grey-900: #1F1F1F;
+  --alloy-grey-950: #101010;
+
+  --alloy-white: #ffffff;
+  --alloy-black: #151515;
+}
+
+/* Layer 2 — Semantic tokens (light mode default) */
+:root {
+  /* Background */
+  --color-bg-primary:      var(--alloy-white);
+  --color-bg-secondary:    var(--alloy-slate-50);
+  --color-bg-tertiary:     var(--alloy-slate-100);
+  --color-bg-transparent:  rgba(21, 21, 21, 0.05);
+  --color-bg-always-dark:  var(--alloy-black);
+  --color-bg-always-light: var(--alloy-white);
+  --color-bg-disabled:     var(--alloy-slate-50);
+
+  /* Content */
+  --color-content-primary:    var(--alloy-black);
+  --color-content-secondary:  var(--alloy-slate-800);
+  --color-content-tertiary:   var(--alloy-slate-500);
+  --color-content-disabled:   var(--alloy-slate-300);
+  --color-content-inverse:    var(--alloy-white);
+  --color-content-link:       var(--alloy-blue-500);
+  --color-content-link-hover: var(--alloy-blue-600);
+
+  /* Border */
+  --color-border-opaque:      var(--alloy-slate-100);
+  --color-border-transparent: rgba(21, 21, 21, 0.05);
+  --color-border-selected:    var(--alloy-slate-850);
+  --color-border-disabled:    var(--alloy-slate-50);
+  --color-border-focus:       var(--alloy-slate-850);
+  --color-border-hover:       var(--alloy-slate-150);
+
+  /* Inverse */
+  --color-bg-inverse-primary:        var(--alloy-black);
+  --color-bg-inverse-secondary:      var(--alloy-slate-900);
+  --color-bg-inverse-tertiary:       var(--alloy-slate-850);
+  --color-content-inverse-primary:   var(--alloy-white);
+  --color-content-inverse-secondary: var(--alloy-slate-200);
+  --color-content-inverse-tertiary:  var(--alloy-slate-400);
+
+  /* Status — Success / Warning / Error / Info */
+  --color-success-fill:    var(--alloy-green-500);
+  --color-success-bg:      var(--alloy-green-50);
+  --color-success-border:  var(--alloy-green-200);
+  --color-success-content: var(--alloy-green-700);
+
+  --color-warning-fill:    var(--alloy-orange-500);
+  --color-warning-bg:      var(--alloy-orange-50);
+  --color-warning-border:  var(--alloy-orange-200);
+  --color-warning-content: var(--alloy-orange-700);
+
+  --color-error-fill:    var(--alloy-red-500);
+  --color-error-bg:      var(--alloy-red-50);
+  --color-error-border:  var(--alloy-red-200);
+  --color-error-content: var(--alloy-red-700);
+
+  --color-info-fill:    var(--alloy-azure-500);
+  --color-info-bg:      var(--alloy-azure-50);
+  --color-info-border:  var(--alloy-azure-200);
+  --color-info-content: var(--alloy-azure-700);
+
+  /* Chart series palette — matches Alloy BarChart/LineChart DEFAULT_PALETTE.
+     Reference as var(--chart-N) in shadcn ChartConfig. */
+  --chart-1: var(--alloy-blue-500);
+  --chart-2: var(--alloy-green-500);
+  --chart-3: var(--alloy-yellow-400);
+  --chart-4: var(--alloy-red-500);
+  --chart-5: var(--alloy-purple-500);
+
+  /* Focus rings */
+  --color-bg-focus-ring:   color-mix(in srgb, var(--alloy-slate-900) 12%, transparent);
+  --color-bg-error-ring:   color-mix(in srgb, var(--alloy-red-500)   12%, transparent);
+  --color-bg-success-ring: color-mix(in srgb, var(--alloy-green-500) 12%, transparent);
+  --color-bg-ai-ring:      color-mix(in srgb, var(--alloy-purple-500) 15%, transparent);
+
+  /* Spacing — 4px scale (Tailwind p-N / m-N already covers this; provided
+     for direct use in custom CSS) */
+  --space-0:  0px;
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* Z-index */
+  --z-base:     0;
+  --z-raised:   10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+
+  /* Icons */
+  --icon-stroke-width: 1.75;
+
+  /* Product gradients */
+  --gradient-policy-engine: linear-gradient(to right, #FFA79B 5.75%, #FF8825 34.95%, #FC6684 65.93%, #FD4274 100%);
+  --gradient-ponder:        linear-gradient(to right, #8C4FE2 0%, #446CFF 50%, #1EDFDE 100%);
+  --gradient-ai:            linear-gradient(to right, #8C4FE2 0%, #446CFF 100%);
+
+  /* Shadows — light mode (subtle) */
+  --shadow-below-low:  0 12px 32px 0 rgba(0, 0, 0, 0.03);
+  --shadow-below-md:   0 2px 4px 0 rgba(0, 0, 0, 0.03), 0 12px 32px 0 rgba(0, 0, 0, 0.06);
+  --shadow-below-high: 0 2px 4px 0 rgba(0, 0, 0, 0.03), 0 12px 32px 0 rgba(0, 0, 0, 0.09);
+  --shadow-above-low:  0 -12px 32px 0 rgba(0, 0, 0, 0.03);
+  --shadow-above-md:   0 -2px 4px 0 rgba(0, 0, 0, 0.03), 0 -12px 32px 0 rgba(0, 0, 0, 0.06);
+  --shadow-above-high: 0 -2px 4px 0 rgba(0, 0, 0, 0.03), 0 -12px 32px 0 rgba(0, 0, 0, 0.09);
+
+  /* shadcn-compatible aliases (light mode) — these are what v0 reaches for */
+  --background:            var(--color-bg-primary);
+  --foreground:            var(--color-content-primary);
+  --card:                  var(--color-bg-primary);
+  --card-foreground:       var(--color-content-primary);
+  --popover:               var(--color-bg-primary);
+  --popover-foreground:    var(--color-content-primary);
+  --primary:               var(--color-bg-inverse-primary);   /* black light, white dark — Alloy primary button */
+  --primary-foreground:    var(--color-content-inverse-primary);
+  --secondary:             var(--color-bg-secondary);
+  --secondary-foreground:  var(--color-content-primary);
+  --muted:                 var(--color-bg-secondary);
+  --muted-foreground:      var(--color-content-tertiary);
+  --accent:                var(--color-bg-tertiary);
+  --accent-foreground:     var(--color-content-primary);
+  --destructive:           var(--color-red-bg-primary);        /* red-600 light, red-500 dark */
+  --destructive-foreground: var(--color-content-inverse-primary);
+  --border:                var(--color-border-opaque);
+  --input:                 var(--color-border-opaque);
+  --ring:                  var(--color-border-focus);
+}
+
+/* Layer 2 — Dark mode overrides (apply with .dark on <html>) */
+.dark {
+  /* Background */
+  --color-bg-primary:      var(--alloy-slate-950);
+  --color-bg-secondary:    var(--alloy-slate-900);
+  --color-bg-tertiary:     var(--alloy-slate-850);
+  --color-bg-transparent:  rgba(255, 255, 255, 0.05);
+  --color-bg-disabled:     var(--alloy-slate-800);
+
+  /* Content */
+  --color-content-primary:    var(--alloy-white);
+  --color-content-secondary:  var(--alloy-slate-200);
+  --color-content-tertiary:   var(--alloy-slate-400);
+  --color-content-disabled:   var(--alloy-slate-600);
+  --color-content-inverse:    var(--alloy-black);
+  --color-content-link:       var(--alloy-blue-400);
+  --color-content-link-hover: var(--alloy-blue-300);
+
+  /* Border */
+  --color-border-opaque:      var(--alloy-slate-700);
+  --color-border-transparent: rgba(255, 255, 255, 0.05);
+  --color-border-selected:    var(--alloy-slate-200);
+  --color-border-disabled:    var(--alloy-slate-800);
+  --color-border-focus:       var(--alloy-slate-200);
+  --color-border-hover:       var(--alloy-slate-800);
+
+  /* Inverse */
+  --color-bg-inverse-primary:        var(--alloy-white);
+  --color-bg-inverse-secondary:      var(--alloy-slate-50);
+  --color-bg-inverse-tertiary:       var(--alloy-slate-100);
+  --color-content-inverse-primary:   var(--alloy-black);
+  --color-content-inverse-secondary: var(--alloy-slate-800);
+  --color-content-inverse-tertiary:  var(--alloy-slate-500);
+
+  /* Status */
+  --color-success-bg:      var(--alloy-green-950);
+  --color-success-border:  var(--alloy-green-800);
+  --color-success-content: var(--alloy-green-400);
+
+  --color-warning-bg:      var(--alloy-orange-950);
+  --color-warning-border:  var(--alloy-orange-800);
+  --color-warning-content: var(--alloy-orange-400);
+
+  --color-error-bg:      var(--alloy-red-950);
+  --color-error-border:  var(--alloy-red-800);
+  --color-error-content: var(--alloy-red-400);
+
+  --color-info-bg:      var(--alloy-azure-950);
+  --color-info-border:  var(--alloy-azure-800);
+  --color-info-content: var(--alloy-azure-400);
+
+  /* Focus rings — slightly more opaque on dark surfaces */
+  --color-bg-focus-ring:   color-mix(in srgb, var(--alloy-slate-200) 15%, transparent);
+  --color-bg-error-ring:   color-mix(in srgb, var(--alloy-red-400)   18%, transparent);
+  --color-bg-success-ring: color-mix(in srgb, var(--alloy-green-400) 18%, transparent);
+  --color-bg-ai-ring:      color-mix(in srgb, var(--alloy-purple-400) 18%, transparent);
+
+  /* Shadows — stronger on dark surfaces */
+  --shadow-below-low:  0 12px 32px 0 rgba(0, 0, 0, 0.20);
+  --shadow-below-md:   0 2px 4px 0 rgba(0, 0, 0, 0.15), 0 12px 32px 0 rgba(0, 0, 0, 0.30);
+  --shadow-below-high: 0 2px 4px 0 rgba(0, 0, 0, 0.15), 0 12px 32px 0 rgba(0, 0, 0, 0.45);
+  --shadow-above-low:  0 -12px 32px 0 rgba(0, 0, 0, 0.20);
+  --shadow-above-md:   0 -2px 4px 0 rgba(0, 0, 0, 0.15), 0 -12px 32px 0 rgba(0, 0, 0, 0.30);
+  --shadow-above-high: 0 -2px 4px 0 rgba(0, 0, 0, 0.15), 0 -12px 32px 0 rgba(0, 0, 0, 0.45);
+
+  /* shadcn-compatible aliases auto-flip in dark via the inverse tokens — no
+     overrides needed here. */
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Tailwind theme bridge
+   ─────────────────────────────────────────────────────────────────────────
+   Exposes Alloy values as Tailwind v4 utilities. Two flavors:
+
+     Standard names (bg-blue-500, rounded-md, shadow-md, ...)
+       → mapped to Alloy palette / radii / shadows so v0 generation lands
+         on-brand by default.
+
+     shadcn aliases (bg-background, text-foreground, bg-primary, ...)
+       → resolve via the Layer-2 vars above and adapt to .dark.
+
+   `inline` keeps the var() chain at runtime so dark-mode flips work.
+   ───────────────────────────────────────────────────────────────────────── */
+@theme inline {
+  /* ── Color palette ──────────────────────────────────────────────────── */
+  --color-blue-50:  var(--alloy-blue-50);
+  --color-blue-100: var(--alloy-blue-100);
+  --color-blue-150: var(--alloy-blue-150);
+  --color-blue-200: var(--alloy-blue-200);
+  --color-blue-300: var(--alloy-blue-300);
+  --color-blue-400: var(--alloy-blue-400);
+  --color-blue-500: var(--alloy-blue-500);
+  --color-blue-600: var(--alloy-blue-600);
+  --color-blue-700: var(--alloy-blue-700);
+  --color-blue-800: var(--alloy-blue-800);
+  --color-blue-850: var(--alloy-blue-850);
+  --color-blue-900: var(--alloy-blue-900);
+  --color-blue-950: var(--alloy-blue-950);
+
+  --color-azure-50:  var(--alloy-azure-50);
+  --color-azure-100: var(--alloy-azure-100);
+  --color-azure-150: var(--alloy-azure-150);
+  --color-azure-200: var(--alloy-azure-200);
+  --color-azure-300: var(--alloy-azure-300);
+  --color-azure-400: var(--alloy-azure-400);
+  --color-azure-500: var(--alloy-azure-500);
+  --color-azure-600: var(--alloy-azure-600);
+  --color-azure-700: var(--alloy-azure-700);
+  --color-azure-800: var(--alloy-azure-800);
+  --color-azure-850: var(--alloy-azure-850);
+  --color-azure-900: var(--alloy-azure-900);
+  --color-azure-950: var(--alloy-azure-950);
+
+  --color-purple-50:  var(--alloy-purple-50);
+  --color-purple-100: var(--alloy-purple-100);
+  --color-purple-150: var(--alloy-purple-150);
+  --color-purple-200: var(--alloy-purple-200);
+  --color-purple-300: var(--alloy-purple-300);
+  --color-purple-400: var(--alloy-purple-400);
+  --color-purple-500: var(--alloy-purple-500);
+  --color-purple-600: var(--alloy-purple-600);
+  --color-purple-700: var(--alloy-purple-700);
+  --color-purple-800: var(--alloy-purple-800);
+  --color-purple-850: var(--alloy-purple-850);
+  --color-purple-900: var(--alloy-purple-900);
+  --color-purple-950: var(--alloy-purple-950);
+
+  --color-pink-50:  var(--alloy-pink-50);
+  --color-pink-100: var(--alloy-pink-100);
+  --color-pink-150: var(--alloy-pink-150);
+  --color-pink-200: var(--alloy-pink-200);
+  --color-pink-300: var(--alloy-pink-300);
+  --color-pink-400: var(--alloy-pink-400);
+  --color-pink-500: var(--alloy-pink-500);
+  --color-pink-600: var(--alloy-pink-600);
+  --color-pink-700: var(--alloy-pink-700);
+  --color-pink-800: var(--alloy-pink-800);
+  --color-pink-850: var(--alloy-pink-850);
+  --color-pink-900: var(--alloy-pink-900);
+  --color-pink-950: var(--alloy-pink-950);
+
+  --color-red-50:  var(--alloy-red-50);
+  --color-red-100: var(--alloy-red-100);
+  --color-red-150: var(--alloy-red-150);
+  --color-red-200: var(--alloy-red-200);
+  --color-red-300: var(--alloy-red-300);
+  --color-red-400: var(--alloy-red-400);
+  --color-red-500: var(--alloy-red-500);
+  --color-red-600: var(--alloy-red-600);
+  --color-red-700: var(--alloy-red-700);
+  --color-red-800: var(--alloy-red-800);
+  --color-red-850: var(--alloy-red-850);
+  --color-red-900: var(--alloy-red-900);
+  --color-red-950: var(--alloy-red-950);
+
+  --color-orange-50:  var(--alloy-orange-50);
+  --color-orange-100: var(--alloy-orange-100);
+  --color-orange-150: var(--alloy-orange-150);
+  --color-orange-200: var(--alloy-orange-200);
+  --color-orange-300: var(--alloy-orange-300);
+  --color-orange-400: var(--alloy-orange-400);
+  --color-orange-500: var(--alloy-orange-500);
+  --color-orange-600: var(--alloy-orange-600);
+  --color-orange-700: var(--alloy-orange-700);
+  --color-orange-800: var(--alloy-orange-800);
+  --color-orange-850: var(--alloy-orange-850);
+  --color-orange-900: var(--alloy-orange-900);
+  --color-orange-950: var(--alloy-orange-950);
+
+  --color-yellow-50:  var(--alloy-yellow-50);
+  --color-yellow-100: var(--alloy-yellow-100);
+  --color-yellow-150: var(--alloy-yellow-150);
+  --color-yellow-200: var(--alloy-yellow-200);
+  --color-yellow-300: var(--alloy-yellow-300);
+  --color-yellow-400: var(--alloy-yellow-400);
+  --color-yellow-500: var(--alloy-yellow-500);
+  --color-yellow-600: var(--alloy-yellow-600);
+  --color-yellow-700: var(--alloy-yellow-700);
+  --color-yellow-800: var(--alloy-yellow-800);
+  --color-yellow-850: var(--alloy-yellow-850);
+  --color-yellow-900: var(--alloy-yellow-900);
+  --color-yellow-950: var(--alloy-yellow-950);
+
+  --color-matcha-50:  var(--alloy-matcha-50);
+  --color-matcha-100: var(--alloy-matcha-100);
+  --color-matcha-150: var(--alloy-matcha-150);
+  --color-matcha-200: var(--alloy-matcha-200);
+  --color-matcha-300: var(--alloy-matcha-300);
+  --color-matcha-400: var(--alloy-matcha-400);
+  --color-matcha-500: var(--alloy-matcha-500);
+  --color-matcha-600: var(--alloy-matcha-600);
+  --color-matcha-700: var(--alloy-matcha-700);
+  --color-matcha-800: var(--alloy-matcha-800);
+  --color-matcha-850: var(--alloy-matcha-850);
+  --color-matcha-900: var(--alloy-matcha-900);
+  --color-matcha-950: var(--alloy-matcha-950);
+
+  --color-green-50:  var(--alloy-green-50);
+  --color-green-100: var(--alloy-green-100);
+  --color-green-150: var(--alloy-green-150);
+  --color-green-200: var(--alloy-green-200);
+  --color-green-300: var(--alloy-green-300);
+  --color-green-400: var(--alloy-green-400);
+  --color-green-500: var(--alloy-green-500);
+  --color-green-600: var(--alloy-green-600);
+  --color-green-700: var(--alloy-green-700);
+  --color-green-800: var(--alloy-green-800);
+  --color-green-850: var(--alloy-green-850);
+  --color-green-900: var(--alloy-green-900);
+  --color-green-950: var(--alloy-green-950);
+
+  --color-slate-50:  var(--alloy-slate-50);
+  --color-slate-100: var(--alloy-slate-100);
+  --color-slate-150: var(--alloy-slate-150);
+  --color-slate-200: var(--alloy-slate-200);
+  --color-slate-300: var(--alloy-slate-300);
+  --color-slate-400: var(--alloy-slate-400);
+  --color-slate-500: var(--alloy-slate-500);
+  --color-slate-600: var(--alloy-slate-600);
+  --color-slate-700: var(--alloy-slate-700);
+  --color-slate-800: var(--alloy-slate-800);
+  --color-slate-850: var(--alloy-slate-850);
+  --color-slate-900: var(--alloy-slate-900);
+  --color-slate-950: var(--alloy-slate-950);
+
+  --color-grey-50:  var(--alloy-grey-50);
+  --color-grey-100: var(--alloy-grey-100);
+  --color-grey-150: var(--alloy-grey-150);
+  --color-grey-200: var(--alloy-grey-200);
+  --color-grey-300: var(--alloy-grey-300);
+  --color-grey-400: var(--alloy-grey-400);
+  --color-grey-500: var(--alloy-grey-500);
+  --color-grey-600: var(--alloy-grey-600);
+  --color-grey-700: var(--alloy-grey-700);
+  --color-grey-800: var(--alloy-grey-800);
+  --color-grey-850: var(--alloy-grey-850);
+  --color-grey-900: var(--alloy-grey-900);
+  --color-grey-950: var(--alloy-grey-950);
+
+  /* Tailwind also ships `gray`; alias to Alloy grey so v0's bg-gray-* matches. */
+  --color-gray-50:  var(--alloy-grey-50);
+  --color-gray-100: var(--alloy-grey-100);
+  --color-gray-150: var(--alloy-grey-150);
+  --color-gray-200: var(--alloy-grey-200);
+  --color-gray-300: var(--alloy-grey-300);
+  --color-gray-400: var(--alloy-grey-400);
+  --color-gray-500: var(--alloy-grey-500);
+  --color-gray-600: var(--alloy-grey-600);
+  --color-gray-700: var(--alloy-grey-700);
+  --color-gray-800: var(--alloy-grey-800);
+  --color-gray-850: var(--alloy-grey-850);
+  --color-gray-900: var(--alloy-grey-900);
+  --color-gray-950: var(--alloy-grey-950);
+
+  /* ── shadcn-compatible color utilities ──────────────────────────────── */
+  --color-background:           var(--background);
+  --color-foreground:           var(--foreground);
+  --color-card:                 var(--card);
+  --color-card-foreground:      var(--card-foreground);
+  --color-popover:              var(--popover);
+  --color-popover-foreground:   var(--popover-foreground);
+  --color-primary:              var(--primary);
+  --color-primary-foreground:   var(--primary-foreground);
+  --color-secondary:            var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted:                var(--muted);
+  --color-muted-foreground:     var(--muted-foreground);
+  --color-accent:               var(--accent);
+  --color-accent-foreground:    var(--accent-foreground);
+  --color-destructive:          var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border:               var(--border);
+  --color-input:                var(--input);
+  --color-ring:                 var(--ring);
+
+  /* ── Border radius (Alloy values) ───────────────────────────────────── */
+  --radius-xs:     2px;
+  --radius-sm:     4px;
+  --radius-button: 6px;  /* Alloy buttons / inputs / selects */
+  --radius-md:     8px;
+  --radius-lg:    12px;
+  --radius-xl:    16px;
+  --radius-2xl:   24px;
+  --radius-full: 9999px;
+
+  /* shadcn convention: --radius is the base button/input radius */
+  --radius: 6px;
+
+  /* ── Shadows ────────────────────────────────────────────────────────── */
+  --shadow-below-low:  var(--shadow-below-low);
+  --shadow-below-md:   var(--shadow-below-md);
+  --shadow-below-high: var(--shadow-below-high);
+  --shadow-above-low:  var(--shadow-above-low);
+  --shadow-above-md:   var(--shadow-above-md);
+  --shadow-above-high: var(--shadow-above-high);
+  /* Alias to Tailwind's standard names so shadow-sm / md / lg map to Alloy */
+  --shadow-sm: var(--shadow-below-low);
+  --shadow-md: var(--shadow-below-md);
+  --shadow-lg: var(--shadow-below-high);
+  --shadow-xl: var(--shadow-below-high);
+
+  /* ── Motion ─────────────────────────────────────────────────────────── */
+  --duration-fast: 100ms;
+  --duration-base: 150ms;
+  --duration-slow: 250ms;
+  --ease-default: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:      cubic-bezier(0.4, 0, 1, 1);
+  --ease-out:     cubic-bezier(0, 0, 0.2, 1);
+
+  /* ── Fonts ──────────────────────────────────────────────────────────── */
+  /* --font-geist-sans / --font-geist-mono come from next/font in app/layout.tsx;
+     fall back to Alloy's stack if the variables aren't set. */
+  --font-sans: var(--font-geist-sans), 'Geist', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: var(--font-geist-mono), 'Geist Mono', ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Base document styles
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Default every element's border-color to --border and outline-color to --ring.
+   Without this, Tailwind v4's reset leaves `border: 0 solid currentColor`, so
+   the .border utility paints near-black borders instead of Alloy slate-100. */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop {
+    border-color: var(--border);
+    outline-color: color-mix(in srgb, var(--ring) 50%, transparent);
+  }
+}
+
+body {
+  background: var(--color-bg-primary);
+  color: var(--color-content-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+}
