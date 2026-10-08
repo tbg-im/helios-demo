@@ -29,7 +29,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   // Draw under the notch and home indicator; the page pads itself with the safe-area insets.
   viewportFit: 'cover',
-  themeColor: '#07090B',
+  themeColor: '#000000',
   colorScheme: 'dark',
 };
 

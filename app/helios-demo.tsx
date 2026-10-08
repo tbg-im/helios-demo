@@ -100,9 +100,10 @@ export default function HeliosDemo() {
   };
 
   return (
-    <main className="relative isolate flex h-dvh flex-col overflow-hidden">
+    // Fixed to the screen, so the page itself never scrolls or bounces; only the inner column scrolls, and only up and down.
+    <main className="fixed inset-0 isolate flex flex-col overflow-hidden bg-[var(--helios-page)]">
       <HeliosBackdrop />
-      <div className="relative z-10 flex flex-1 flex-col overflow-y-auto overscroll-contain px-4 pt-[max(env(safe-area-inset-top),1.5rem)] pb-[max(env(safe-area-inset-bottom),1.5rem)]">
+      <div className="relative z-10 flex flex-1 flex-col overflow-x-hidden overflow-y-auto overscroll-contain px-4 pt-[max(env(safe-area-inset-top),1.5rem)] pb-[max(env(safe-area-inset-bottom),1.5rem)]">
         <div className="mx-auto my-auto flex w-full max-w-xl flex-col items-center py-4">
           {/* One button throughout, so the orb shrinks in place instead of being swapped out. */}
           <button
@@ -280,7 +281,7 @@ function DemoSignup({ onBack, onDone }: { onBack: () => void; onDone: () => void
         </p>
       </div>
 
-      <form action={formAction} className="helios-panel flex flex-col gap-4 rounded-xl p-4" noValidate>
+      <form action={formAction} className="helios-panel relative flex flex-col gap-4 rounded-xl p-4" noValidate>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field id="firstName" label="First name" autoComplete="given-name" defaultValue={values?.firstName} error={fieldErrors.firstName} />
           <Field id="lastName" label="Last name" autoComplete="family-name" defaultValue={values?.lastName} error={fieldErrors.lastName} />
@@ -302,7 +303,7 @@ function DemoSignup({ onBack, onDone }: { onBack: () => void; onDone: () => void
           tabIndex={-1}
           autoComplete="off"
           aria-hidden
-          className="absolute -left-[9999px] size-px opacity-0"
+          className="pointer-events-none absolute top-0 left-0 size-px opacity-0"
         />
 
         {state.status === 'error' && (

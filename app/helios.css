@@ -1,10 +1,16 @@
-/* Helios's look, ported from Teambridge's Aura (helios.scss, ultron.scss). The aurora hues are
-   decorative light, so like the original they have no semantic tokens. */
+/* Helios's look, ported from Teambridge's Aura (helios.scss, ultron.scss), on a true black page:
+   the orb and drifting particles only, without Aura's aurora washes. */
+
+:root {
+  /* True black, so the page meets the phone's own black at the notch and home indicator.
+     Alloy's black (#151515) reads as grey on OLED screens. */
+  --helios-page: #000;
+}
 
 html,
 body {
   height: 100%;
-  background: var(--color-bg-primary);
+  background: var(--helios-page);
   /* No rubber-band scroll or pull-to-refresh when it runs as a home-screen app. */
   overscroll-behavior: none;
 }
@@ -18,31 +24,6 @@ body {
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-
-  --aurora-mint: hsl(170 72% 64%);
-  --aurora-sky: hsl(202 82% 64%);
-  --aurora-blue: hsl(228 84% 64%);
-  --aurora-violet: hsl(252 78% 64%);
-  --aurora-pink: hsl(330 82% 68%);
-  --aurora-peach: hsl(32 88% 66%);
-  --aurora-core: 18%;
-  --aurora-rim: 12%;
-
-  /* Sized from the viewport's short side so the washes stay round on tall phones. */
-  background:
-    radial-gradient(54vmin 39vmin at 40% 24%, color-mix(in srgb, var(--aurora-mint) var(--aurora-core), transparent), transparent 72%),
-    radial-gradient(70vmin 52vmin at 52% 40%, color-mix(in srgb, var(--aurora-sky) var(--aurora-core), transparent), transparent 74%),
-    radial-gradient(67vmin 57vmin at 36% 60%, color-mix(in srgb, var(--aurora-blue) var(--aurora-core), transparent), transparent 74%),
-    radial-gradient(58vmin 52vmin at 26% 42%, color-mix(in srgb, var(--aurora-violet) var(--aurora-rim), transparent), transparent 72%),
-    radial-gradient(48vmin 44vmin at 70% 32%, color-mix(in srgb, var(--aurora-pink) var(--aurora-rim), transparent), transparent 70%),
-    radial-gradient(42vmin 36vmin at 68% 62%, color-mix(in srgb, var(--aurora-peach) var(--aurora-rim), transparent), transparent 70%);
-}
-
-.helios-backdrop::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(192vmin 117vmin at 100% 0%, var(--color-bg-secondary) 0%, transparent 55%);
 }
 
 .helios-backdrop > canvas {
@@ -72,15 +53,6 @@ body {
 
 .helios-orb[data-compact='true'] {
   --orb-size: min(28vw, 120px);
-}
-
-.helios-orb::before {
-  content: '';
-  position: absolute;
-  inset: -20%;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--color-bg-secondary) 0%, transparent 70%);
-  pointer-events: none;
 }
 
 .helios-orb-mark {
@@ -150,7 +122,7 @@ button.helios-orb:focus-visible {
   text-align: center;
   border-radius: 9999px;
   border: 1px solid color-mix(in srgb, var(--color-content-primary) 14%, transparent);
-  background: color-mix(in srgb, var(--color-bg-primary) 80%, transparent);
+  background: color-mix(in srgb, var(--helios-page) 80%, transparent);
   color: var(--color-content-primary);
   font-size: 0.9375rem;
   line-height: 1.25rem;
@@ -190,7 +162,7 @@ button.helios-orb:focus-visible {
 /* Glassy surface for the panels that open under the orb, after the Helios composer and pills. */
 .helios-panel {
   border: 1px solid color-mix(in srgb, var(--color-content-primary) 12%, transparent);
-  background: color-mix(in srgb, var(--color-bg-primary) 72%, transparent);
+  background: color-mix(in srgb, var(--helios-page) 72%, transparent);
   backdrop-filter: blur(18px) saturate(160%);
   -webkit-backdrop-filter: blur(18px) saturate(160%);
 }
