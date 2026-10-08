@@ -159,8 +159,8 @@ function Intro({ firstView }: { firstView: boolean }) {
         Let&apos;s get to work.
       </h1>
       <p className={cn(rise(2), 'max-w-md text-base leading-6 text-muted-foreground sm:text-lg sm:leading-7')}>
-        I can set up your job titles, schedules, time off, pay rules and onboarding, and change them as your team
-        grows.
+        I can build new features, update your workflows, make updates across your account, do the day-to-day work,
+        and help you learn and improve.
       </p>
       <p className={cn(rise(3), 'mt-4')}>
         <span className="helios-hint text-sm text-muted-foreground">Tap the orb to see what I can do</span>
