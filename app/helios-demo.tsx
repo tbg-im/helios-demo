@@ -5,9 +5,9 @@ import {
   ArrowLeftIcon,
   BlocksIcon,
   CheckIcon,
+  ListChecksIcon,
   Loader2Icon,
   PencilLineIcon,
-  SendIcon,
   TrendingUpIcon,
   WorkflowIcon,
 } from 'lucide-react';
@@ -27,7 +27,7 @@ const HELIOS_MARK_SPEED = 0.2;
 const CAPABILITIES = [
   {
     icon: BlocksIcon,
-    tag: 'New features',
+    tag: 'Build features',
     label: 'Build new features',
     detail:
       'Stand out from other staffing firms with tools your clients and workers will notice. Describe what you want, and Helios builds it into your account.',
@@ -40,7 +40,7 @@ const CAPABILITIES = [
   },
   {
     icon: WorkflowIcon,
-    tag: 'Workflows',
+    tag: 'Update workflows',
     label: 'Update your workflows',
     detail:
       'Change how work moves through your account: approvals, reminders, onboarding steps and handoffs. Helios shows you what will change before it saves anything.',
@@ -52,7 +52,7 @@ const CAPABILITIES = [
   },
   {
     icon: PencilLineIcon,
-    tag: 'Updates',
+    tag: 'Make updates',
     label: 'Make updates',
     detail:
       'Change pay rates, roles, locations and client details across your account in one ask, instead of one record at a time.',
@@ -63,23 +63,23 @@ const CAPABILITIES = [
     ],
   },
   {
-    icon: SendIcon,
-    tag: 'Reach out',
-    label: 'Reach out to staff',
+    icon: ListChecksIcon,
+    tag: 'Do work',
+    label: 'Do the work',
     detail:
-      'Text or email the right people at the right time. Helios finds who is qualified and available, sends the message, and keeps track of who replies.',
+      'Hand Helios the tasks your team does by hand every day. It reaches out to the right staff, fills open shifts and chases missing paperwork, and tells you when it is done.',
     examples: [
-      "Text available RNs about tonight's open shift",
+      "Text available RNs about tonight's open shift and book the first yes",
       'Ask everyone with an expiring license to upload a new one',
-      'Thank the team that covered last weekend',
+      'Confirm tomorrow\'s shifts with every worker on them',
     ],
   },
   {
     icon: TrendingUpIcon,
-    tag: 'Metrics',
-    label: 'Improve your metrics',
+    tag: 'Learn & improve',
+    label: 'Learn and improve',
     detail:
-      "Helios watches fill rate, time to fill, no-shows and margins, points out what's slipping, and suggests changes you can make in one step.",
+      "Helios learns how your business runs. It watches fill rate, time to fill, no-shows and margins, points out what's slipping, and suggests changes you can make in one step.",
     examples: [
       'Why did our fill rate drop last month?',
       'Which clients cancel shifts last minute most often?',
@@ -121,7 +121,7 @@ export default function HeliosDemo() {
           </button>
 
           {step === 'intro' && <Intro firstView={firstView} />}
-          {step === 'capabilities' && <Capabilities onTryDemo={() => go('demo')} />}
+          {step === 'capabilities' && <Capabilities onGetHelios={() => go('demo')} onBack={() => go('intro')} />}
           {step === 'demo' && <DemoSignup onBack={() => go('capabilities')} onDone={() => go('intro')} />}
         </div>
       </div>
@@ -169,7 +169,7 @@ function Intro({ firstView }: { firstView: boolean }) {
   );
 }
 
-function Capabilities({ onTryDemo }: { onTryDemo: () => void }) {
+function Capabilities({ onGetHelios, onBack }: { onGetHelios: () => void; onBack: () => void }) {
   const [selected, setSelected] = useState(0);
   const { icon: SelectedIcon, label, detail, examples } = CAPABILITIES[selected];
 
@@ -225,9 +225,16 @@ function Capabilities({ onTryDemo }: { onTryDemo: () => void }) {
         </div>
       </div>
 
-      <Button size="lg" className="h-12 w-full rounded-full text-base sm:w-auto sm:px-10" onClick={onTryDemo}>
-        Try the demo
-      </Button>
+      <div className="flex w-full flex-col items-center gap-3">
+        <p className="text-base text-foreground">Want my help on your next initiative?</p>
+        <Button size="lg" className="h-12 w-full rounded-full text-base sm:w-auto sm:px-10" onClick={onGetHelios}>
+          Get Helios
+        </Button>
+        <Button variant="ghost" size="lg" className="h-12 w-full rounded-full text-base sm:w-auto" onClick={onBack}>
+          <ArrowLeftIcon aria-hidden />
+          Back
+        </Button>
+      </div>
     </section>
   );
 }
@@ -248,8 +255,8 @@ function DemoSignup({ onBack, onDone }: { onBack: () => void; onDone: () => void
         </h2>
         <p className="max-w-sm text-base leading-6 text-muted-foreground">
           {state.status === 'created'
-            ? "You've been added to the demo team. Keep your phone handy to see Helios at work."
-            : 'That number is already on the demo team. Keep your phone handy to see Helios at work.'}
+            ? "You've been added. Keep your phone handy to see Helios at work."
+            : "That number is already set up. Keep your phone handy to see Helios at work."}
         </p>
         <Button variant="ghost" size="lg" className="mt-4 h-12 w-full rounded-full text-base" onClick={onDone}>
           Back to the start
@@ -266,10 +273,10 @@ function DemoSignup({ onBack, onDone }: { onBack: () => void; onDone: () => void
     <section className="helios-step mt-4 flex w-full flex-col gap-5" aria-labelledby="demo-heading">
       <div className="flex flex-col gap-2 text-center">
         <h2 id="demo-heading" className="text-2xl font-semibold tracking-tight text-foreground">
-          Try the demo
+          Get Helios
         </h2>
         <p className="text-base leading-6 text-muted-foreground">
-          Add your name and mobile number to join the demo team, and see Helios work with you in it.
+          Add your name and mobile number to get started with Helios.
         </p>
       </div>
 
@@ -306,7 +313,7 @@ function DemoSignup({ onBack, onDone }: { onBack: () => void; onDone: () => void
 
         <Button type="submit" size="lg" className="h-12 rounded-full text-base" disabled={pending}>
           {pending && <Loader2Icon className="animate-spin" aria-hidden />}
-          {pending ? 'Adding you…' : 'Join the demo'}
+          {pending ? 'Setting you up…' : 'Get Helios'}
         </Button>
       </form>
 
