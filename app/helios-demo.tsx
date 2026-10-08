@@ -121,7 +121,7 @@ export default function HeliosDemo() {
           </button>
 
           {step === 'intro' && <Intro firstView={firstView} />}
-          {step === 'capabilities' && <Capabilities onGetHelios={() => go('demo')} onBack={() => go('intro')} />}
+          {step === 'capabilities' && <Capabilities onTryHelios={() => go('demo')} onBack={() => go('intro')} />}
           {step === 'demo' && <DemoSignup onBack={() => go('capabilities')} onDone={() => go('intro')} />}
         </div>
       </div>
@@ -169,7 +169,7 @@ function Intro({ firstView }: { firstView: boolean }) {
   );
 }
 
-function Capabilities({ onGetHelios, onBack }: { onGetHelios: () => void; onBack: () => void }) {
+function Capabilities({ onTryHelios, onBack }: { onTryHelios: () => void; onBack: () => void }) {
   const [selected, setSelected] = useState(0);
   const { icon: SelectedIcon, label, detail, examples } = CAPABILITIES[selected];
 
@@ -227,8 +227,8 @@ function Capabilities({ onGetHelios, onBack }: { onGetHelios: () => void; onBack
 
       <div className="flex w-full flex-col items-center gap-3">
         <p className="text-base text-foreground">Want my help on your next initiative?</p>
-        <Button size="lg" className="h-12 w-full rounded-full text-base sm:w-auto sm:px-10" onClick={onGetHelios}>
-          Get Helios
+        <Button size="lg" className="h-12 w-full rounded-full text-base sm:w-auto sm:px-10" onClick={onTryHelios}>
+          Try Helios
         </Button>
         <Button variant="ghost" size="lg" className="h-12 w-full rounded-full text-base sm:w-auto" onClick={onBack}>
           <ArrowLeftIcon aria-hidden />
@@ -273,10 +273,10 @@ function DemoSignup({ onBack, onDone }: { onBack: () => void; onDone: () => void
     <section className="helios-step mt-4 flex w-full flex-col gap-5" aria-labelledby="demo-heading">
       <div className="flex flex-col gap-2 text-center">
         <h2 id="demo-heading" className="text-2xl font-semibold tracking-tight text-foreground">
-          Get Helios
+          Try Helios
         </h2>
         <p className="text-base leading-6 text-muted-foreground">
-          Add your name and mobile number to get started with Helios.
+          Add your name and mobile number to try Helios.
         </p>
       </div>
 
@@ -313,7 +313,7 @@ function DemoSignup({ onBack, onDone }: { onBack: () => void; onDone: () => void
 
         <Button type="submit" size="lg" className="h-12 rounded-full text-base" disabled={pending}>
           {pending && <Loader2Icon className="animate-spin" aria-hidden />}
-          {pending ? 'Setting you up…' : 'Get Helios'}
+          {pending ? 'Setting you up…' : 'Try Helios'}
         </Button>
       </form>
 
