@@ -159,6 +159,64 @@ button.helios-orb:focus-visible {
   color: var(--color-content-inverse);
 }
 
+/* The light that drifts toward whoever is in front of the phone (presence-glow.tsx), after the
+   desktop Helios mouse glow. Between the particles and the content. */
+.helios-glow {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.helios-glow__blob {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: radial-gradient(
+    circle at var(--glow-cx, 35%) var(--glow-cy, 35%),
+    hsl(var(--glow-ha, 200) 86% 66% / 0.9),
+    hsl(var(--glow-hb, 245) 86% 66% / 0.8) 62%,
+    hsl(var(--glow-hc, 330) 86% 72% / 0.5) 88%
+  );
+  filter: blur(56px);
+  will-change: transform, opacity, border-radius;
+}
+
+/* The presenter's camera switch: small and out of the way in the corner. */
+.helios-camera-toggle {
+  position: absolute;
+  z-index: 20;
+  right: max(env(safe-area-inset-right), 1rem);
+  bottom: max(env(safe-area-inset-bottom), 1rem);
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, var(--color-content-primary) 12%, transparent);
+  background: color-mix(in srgb, var(--helios-page) 70%, transparent);
+  color: var(--color-content-tertiary);
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 150ms ease;
+}
+
+.helios-camera-toggle:hover,
+.helios-camera-toggle:focus-visible,
+.helios-camera-toggle[aria-pressed='true'] {
+  opacity: 1;
+}
+
+.helios-camera-toggle:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+.helios-camera-toggle svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
 /* Glassy surface for the panels that open under the orb, after the Helios composer and pills. */
 .helios-panel {
   border: 1px solid color-mix(in srgb, var(--color-content-primary) 12%, transparent);

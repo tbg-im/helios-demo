@@ -1,9 +1,11 @@
 'use client';
 
-import { useActionState, useEffect, useState } from 'react';
+import { useActionState, useCallback, useEffect, useState, useSyncExternalStore } from 'react';
 import {
   ArrowLeftIcon,
   BlocksIcon,
+  CameraIcon,
+  CameraOffIcon,
   CheckIcon,
   ListChecksIcon,
   Loader2Icon,
@@ -16,6 +18,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AgentMark from '@/components/helios/agent-mark';
 import HeliosBackdrop from '@/components/helios/helios-backdrop';
+import PresenceGlow from '@/components/helios/presence-glow';
+import { getCameraPref, setCameraPref, subscribeCameraPref } from '@/components/helios/camera-pref';
 import { cn } from '@/lib/utils';
 import { signUpForDemo, type DemoSignupState } from './actions';
 
@@ -94,6 +98,9 @@ export default function HeliosDemo() {
   // The first view waits on the orb's intro; later visits to a step just rise in.
   const [firstView, setFirstView] = useState(true);
   const { cycle, leaving } = useOrbCycle(step === 'intro');
+  // Off on the server; the browser then reads the presenter's last choice.
+  const camera = useSyncExternalStore(subscribeCameraPref, getCameraPref, () => false);
+  const onCameraError = useCallback(() => setCameraPref(false), []);
   const go = (next: Step) => {
     setFirstView(false);
     setStep(next);
@@ -103,6 +110,7 @@ export default function HeliosDemo() {
     // Fixed to the screen, so the page itself never scrolls or bounces; only the inner column scrolls, and only up and down.
     <main className="fixed inset-0 isolate flex flex-col overflow-hidden bg-[var(--helios-page)]">
       <HeliosBackdrop />
+      <PresenceGlow camera={camera} onCameraError={onCameraError} />
       <div className="relative z-10 flex flex-1 flex-col overflow-x-hidden overflow-y-auto overscroll-contain px-4 pt-[max(env(safe-area-inset-top),1.5rem)] pb-[max(env(safe-area-inset-bottom),1.5rem)]">
         <div className="mx-auto my-auto flex w-full max-w-xl flex-col items-center py-4">
           {/* One button throughout, so the orb shrinks in place instead of being swapped out. */}
@@ -126,6 +134,20 @@ export default function HeliosDemo() {
           {step === 'demo' && <DemoSignup onBack={() => go('capabilities')} onDone={() => go('intro')} />}
         </div>
       </div>
+      <button
+        type="button"
+        className="helios-camera-toggle"
+        aria-pressed={camera}
+        aria-label={camera ? 'Stop the camera glow' : 'Glow when someone is near (uses the camera)'}
+        title={
+          camera
+            ? 'Stop the camera glow'
+            : 'Glow when someone is near. Uses the camera on this phone only; nothing is recorded or sent.'
+        }
+        onClick={() => setCameraPref(!camera)}
+      >
+        {camera ? <CameraIcon aria-hidden /> : <CameraOffIcon aria-hidden />}
+      </button>
     </main>
   );
 }
