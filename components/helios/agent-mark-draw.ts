@@ -168,12 +168,16 @@ function drawCore(e: Ctx, T: number, P: Pal) {
         if (P.glow && alert < 1) {
             // dark-surface glow halo (alert never fires here, so fade it with 1-alert)
             ctx.globalAlpha = 1 - alert
-            const cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, coreR * 3)
-            cg.addColorStop(0, 'rgba(' + P.core + ',0.55)')
+            // A wide, eased bloom so the core reads as a sun rather than a disc.
+            const hr = coreR * 4.5
+            const cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, hr)
+            cg.addColorStop(0, 'rgba(' + P.core + ',0.6)')
+            cg.addColorStop(0.3, 'rgba(' + P.core + ',0.26)')
+            cg.addColorStop(0.6, 'rgba(' + P.accent + ',0.08)')
             cg.addColorStop(1, 'rgba(' + P.accent + ',0)')
             ctx.fillStyle = cg
             ctx.beginPath()
-            ctx.arc(cx, cy, coreR * 3, 0, 6.2832)
+            ctx.arc(cx, cy, hr, 0, 6.2832)
             ctx.fill()
         } else if (!P.glow) {
             const hr = coreR * lerp(3.2, 3)
@@ -210,25 +214,25 @@ function drawCore(e: Ctx, T: number, P: Pal) {
     const monoA = P.glow ? 1 : 0.95
     const cr = Math.max(0.8, coreR * lerp(1, 1.5))
     const off = coreR * 0.1 * alert // near-centered (sun), with a faint lift
+    // Safari ignores ctx.filter, so a blur() here left the core a hard-edged disc on iPhones. Draw
+    // the blurred disc directly instead: full strength to ~70% of the radius, half at the rim, and
+    // gone by 1.4x, which is what a blur of about a quarter of the radius produces.
+    const blurR = cr * 1.4
+    const rgba = (stop: number, a: number) =>
+        'rgba(' + mixRGB(P.core, ALERT_CORE[stop], alert) + ',' + a + ')'
     ctx.save()
-    ctx.filter = 'blur(' + Math.max(0.4, coreR * lerp(0.22, 0.3)).toFixed(2) + 'px)'
-    const cg = ctx.createRadialGradient(cx - off, cy - off, 0, cx, cy, cr)
-    cg.addColorStop(0, 'rgba(' + mixRGB(P.core, ALERT_CORE[0], alert) + ',' + lerp(monoA, 1) + ')')
-    cg.addColorStop(
-        0.5,
-        'rgba(' + mixRGB(P.core, ALERT_CORE[1], alert) + ',' + lerp(monoA, 1) + ')'
-    )
-    cg.addColorStop(
-        0.82,
-        'rgba(' + mixRGB(P.core, ALERT_CORE[2], alert) + ',' + lerp(monoA, 0.97) + ')'
-    )
-    cg.addColorStop(
-        1,
-        'rgba(' + mixRGB(P.core, ALERT_CORE[3], alert) + ',' + lerp(monoA, 0.72) + ')'
-    )
+    const cg = ctx.createRadialGradient(cx - off, cy - off, 0, cx, cy, blurR)
+    cg.addColorStop(0, rgba(0, lerp(monoA, 1)))
+    cg.addColorStop(0.36, rgba(1, lerp(monoA, 1)))
+    cg.addColorStop(0.5, rgba(1, lerp(monoA * 0.95, 1)))
+    cg.addColorStop(0.62, rgba(2, lerp(monoA * 0.78, 0.97)))
+    cg.addColorStop(0.71, rgba(2, lerp(monoA * 0.5, 0.85)))
+    cg.addColorStop(0.82, rgba(3, lerp(monoA * 0.2, 0.5)))
+    cg.addColorStop(0.93, rgba(3, lerp(monoA * 0.06, 0.15)))
+    cg.addColorStop(1, rgba(3, 0))
     ctx.fillStyle = cg
     ctx.beginPath()
-    ctx.arc(cx, cy, cr, 0, 6.2832)
+    ctx.arc(cx, cy, blurR, 0, 6.2832)
     ctx.fill()
     ctx.restore()
 }
